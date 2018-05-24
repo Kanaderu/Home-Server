@@ -1,0 +1,76 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>{% block title %}Elysium{% endblock %}</title>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+</head>
+
+<body >
+
+  <header>
+    <!-- Navbar on large screens -->
+    <div class="top ">
+     <div class="bar black-background left-align large-nav">
+      <a href="{% url 'home' %}" class="bar-item button teal"><i class="fa fa-home margin-right"></i>Elysium</a>
+      {% if user.is_authenticated %}
+        <a href="{% url 'profile' %}" class="bar-item button hover-white"><i class="fa fa-user margin-right"></i>Edit Account</a>
+        <a href="{% url 'logout' %}" class="bar-item button hover-white"><i class="fa fa-sign-out margin-right"></i>Logout</a>
+      {% else %}
+        <a href="{% url 'login' %}" class="bar-item button hover-white"><i class="fa fa-sign-in margin-right"></i>Login</a>
+        <a href="{% url 'register' %}" class="bar-item button hover-white">Register</a>
+      {% endif %}
+      {% if user.is_authenticated %}
+      <a class="bar-item right ">Last Login: {{ user.last_login }}</a>
+      {% endif %}
+      <a href="#" class="bar-item button right hover-teal" title="Search"><i class="fa fa-search"></i></a>
+     </div>
+
+      <!-- Navbar on small screens -->
+      <div class="bar-block black-background small-nav">
+        <a href="{% url 'home' %}" class="bar-item button teal"><i class="fa fa-home margin-right"></i>AgraBusiness</a>
+      {% if user.is_authenticated %}
+        <a href="{% url 'profile' %}" class="bar-item button"><i class="fa fa-user margin-right"></i>Edit Account</a>
+        <a href="{% url 'logout' %}" class="bar-item button"><i class="fa fa-sign-out margin-right"></i>Logout</a>
+      {% else %}
+        <a href="{% url 'login' %}" class="bar-item button"><i class="fa fa-sign-in margin-right"></i>Login</a>
+        <a href="{% url 'register' %}" class="bar-item button">Register</a>
+      {% endif %}
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div class="display-container animate-opacity">
+      <!--<img src="{% block header_img %}{% static 'header.jpg' %}{% endblock %}" class="header-img">-->
+
+      <h1 class="jumbo animate-top">Elysium</h1>
+      <h2 class="animate-top">{% block page_name %}Base{% endblock %}</h2>
+        {% if user.is_authenticated %}
+          Hi {{ user.username }}!<br/>
+          Last Login: {{ user.last_login }}<br/>
+          email: {{ user.email }}<br/>
+          first_name: {{ user.first_name }}<br/>
+          last_name: {{ user.last_name }}<br/>
+          city: {{ user.profile.city }}<br/>
+          state: {{ user.profile.state }}<br/>
+          gender: {{ user.profile.gender}}<br/>
+          is_active: {{ user.profile.is_active }}<br/>
+          avatar: {{ user.profile.avatar }}<br/>
+          {% if user.profile.avatar == None %}
+            avatar_url: {{ user.profile.avatar.url }}<br/>
+          {% else %}
+            avatar_url: None<br/>
+          {% endif %}
+        {% endif %}
+    </div>
+      {% block content %}
+      {% endblock %}
+    </main>
+  </div>
+</body>
+</html>
