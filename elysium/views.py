@@ -13,7 +13,7 @@ from django.utils.translation import gettext as _
 def update_profile(request):
     if request.method == 'POST':
         user_form = UserForm(request.POST, instance=request.user)
-        profile_form = ProfileForm(request.POST, request.FILES, instance=request.user.profile)
+        profile_form = ProfileForm(request.POST, instance=request.user.profile)
         if user_form.is_valid() and profile_form.is_valid():
             user_form.save()
             profile_form.save()
@@ -35,20 +35,22 @@ def update_profile(request):
 def register(request):
     if request.method == 'POST':
         register_form = RegisterForm(request.POST)
+        #profile_form = ProfileForm(request.POST, user=request.user)
         if register_form.is_valid():# and profile_form.is_valid():
             user = register_form.save()
             user.refresh_from_db()
 
-            #profile_form = ProfileForm(request.POST, instance=request.user.profile)
-            profile_form = ProfileForm(request.POST, request.FILES, instance=user.profile)
-            profile_form.save()
-            # add userinfo data
-#            user.userinfo.user_type = register_form.cleaned_data.get('user_type')
-            user.save()
-            raw_password = register_form.cleaned_data.get('password1')
-            user = authenticate(username=user.username, password=raw_password)
-            login(request, user)
-            return redirect('home')
+            profile_form = ProfileForm(request.POST, instance=user.profile)
+            #profile_form = ProfileForm(request.POST, request.FILES, instance=user.profile)
+            if profile_form.is_valid():
+                profile_form.save()
+                # add userinfo data
+                #user.userinfo.user_type = register_form.cleaned_data.get('user_type')
+                user.save()
+                raw_password = register_form.cleaned_data.get('password1')
+                user = authenticate(username=user.username, password=raw_password)
+                login(request, user)
+                return redirect('home')
     else:
         register_form = RegisterForm()
         profile_form = ProfileForm()

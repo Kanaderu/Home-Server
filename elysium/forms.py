@@ -12,7 +12,7 @@ class UserForm(forms.ModelForm):
 class ProfileForm(forms.ModelForm):
     class Meta:
         model = Profile
-        fields = ('city', 'state', 'gender', 'avatar')
+        fields = ('city', 'state', 'gender')
 
 
 # User Registration Forms

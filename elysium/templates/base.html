@@ -1,4 +1,5 @@
 {% load static %}
+{% load avatar_tags %}
 
 <!DOCTYPE html>
 <html>
@@ -49,6 +50,7 @@
       <!--<img src="{% block header_img %}{% static 'header.jpg' %}{% endblock %}" class="header-img">-->
 
       <h1 class="jumbo animate-top">Elysium</h1>
+  <a href="{% url 'avatar_change' %}">Change your avatar</a>
       <h2 class="animate-top">{% block page_name %}Base{% endblock %}</h2>
         {% if user.is_authenticated %}
           Hi {{ user.username }}!<br/>
@@ -60,12 +62,7 @@
           state: {{ user.profile.state }}<br/>
           gender: {{ user.profile.gender}}<br/>
           is_active: {{ user.profile.is_active }}<br/>
-          avatar: {{ user.profile.avatar }}<br/>
-          {% if user.profile.avatar == None %}
-            avatar_url: {{ user.profile.avatar.url }}<br/>
-          {% else %}
-            avatar_url: None<br/>
-          {% endif %}
+          {% avatar user %}
         {% endif %}
     </div>
       {% block content %}

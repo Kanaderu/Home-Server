@@ -16,15 +16,10 @@ class Profile(models.Model):
     state = models.CharField(max_length=2, blank=True)
     gender = models.CharField(max_length=1, choices=GENDER_TYPE, blank=True)
     is_active = models.BooleanField(_('active'), default=True)
-    avatar = models.ImageField(upload_to='avatars/', null=True, blank=True)
 
     def __str__(self):
         return self.user.first_name + ' ' + self.user.last_name
 
-    def set_avatar(self):
-        _avatar = self.avatar
-        if not _avatar:
-            self.avatar = "path/to/default/avatar.png"
 
 @receiver(post_save, sender=User)
 def create_user_profile(sender, instance, created, **kwargs):
